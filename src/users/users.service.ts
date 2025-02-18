@@ -26,9 +26,25 @@ export class UsersService {
     return 'Usuario creado con éxito';
 
   }
-
+  async findOneByEmail(email: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new NotFoundException(`User with id ${email} not found`);
+    }
+    console.log(user);
+    
+    return user;
+  }
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
+  }
+  async findOne(id: number): Promise<number> {
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }    
+    return user.id;
   }
 
   async deleteUser(id: number): Promise<string> {
@@ -36,7 +52,7 @@ export class UsersService {
     return 'Usuario eliminado con éxito';
   }
   async updateUser(id: number, name: string, email: string, role: Role): Promise<string> {
-    const user = await this.userRepository.findOne({ where: { id } }); 
+    const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`Usuario con id ${id} no encontrado`);
     }

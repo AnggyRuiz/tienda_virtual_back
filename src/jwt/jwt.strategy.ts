@@ -14,7 +14,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const user = await this.usersService.findAll(); // Busca al usuario según el payload
-    return user[0]; // Devuelve el usuario encontrado (puedes optimizar esta parte)
+    const user = await this.usersService.findOne(payload.sub); // Busca al usuario según el payload
+    console.log(user);
+    
+    return {
+      userId: payload.sub,
+      username: payload.username,
+      role: payload.role
+    };
   }
 }

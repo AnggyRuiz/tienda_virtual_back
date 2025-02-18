@@ -9,6 +9,12 @@ async function bootstrap() {
   // Setup global validation
   app.useGlobalPipes(new ValidationPipe());
 
+  app.enableCors({
+    origin: '*', // Permitir cualquier origen (no recomendado en producción)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true, // Habilitar si se usan cookies o autenticación con sesiones
+  });
   // Swagger setup
   const config = new DocumentBuilder()
     .setTitle('Tienda Virtual API')
